@@ -11,20 +11,20 @@
 <script>
 export default {
   name: 'App',
-  data(){
+  data() {
     return {
-      displayConfirmation:false
-    }
+      displayConfirmation: false,
+    };
   },
-  methods:{
+  methods: {
     openConfirmation() {
       this.displayConfirmation = true;
     },
     closeConfirmation() {
       this.displayConfirmation = false;
     },
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -37,8 +37,8 @@ export default {
 }
 
 .confirmation-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
