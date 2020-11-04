@@ -1,6 +1,5 @@
-import firebase from 'firebase';
-
-console.log(process.env.VUE_APP_APIKEY);
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_APIKEY,

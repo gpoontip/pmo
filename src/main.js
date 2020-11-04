@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import store from './store';
 
 // Importing the Nova Light PrimeVue theme styles
 import 'primevue/resources/themes/saga-blue/theme.css';
@@ -14,4 +15,4 @@ import 'primeicons/primeicons.css';
 // Importing PrimeFlex (grid system, flexbox, spacing, elevation and more)
 import 'primeflex/primeflex.css';
 
-createApp(App).use(router).mount('#app');
+createApp(App).use(store).use(router).mount('#app');

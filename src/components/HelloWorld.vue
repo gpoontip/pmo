@@ -94,7 +94,6 @@ export default {
               name: doc.data().name,
               date: doc.data().date,
             });
-            console.log(doc.id, ' => ', doc.data());
           });
         })
         .catch((error) => {
@@ -132,7 +131,7 @@ export default {
   },
   mounted() {
     this.readEmployees();
-    console.log(process.env.VUE_APP_NOT_SECRET_CODE);
+    console.log(this.$store.state);
   },
 };
 </script>

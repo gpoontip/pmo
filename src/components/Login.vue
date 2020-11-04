@@ -13,7 +13,8 @@
           />
         </div>
       </div>
-      <Button label="Submit" @click="login" />
+      <Button label="Login" @click="login" />
+      <Button label="Register" @click="register" />
     </form>
   </div>
 </template>
@@ -35,7 +36,18 @@ export default {
     };
   },
   methods: {
-    login() {},
+    login() {
+      this.$store.dispatch('login', {
+        email: this.email,
+        password: this.password,
+      });
+    },
+    register() {
+      this.$store.dispatch('signup', {
+        email: this.email,
+        password: this.password,
+      });
+    },
   },
 };
 </script>
