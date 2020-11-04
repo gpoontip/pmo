@@ -131,7 +131,6 @@ export default {
   },
   mounted() {
     this.readEmployees();
-    console.log(this.$store.state);
   },
 };
 </script>

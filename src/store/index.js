@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
+import router from '../router';
 
 const store = createStore({
   state() {
@@ -89,6 +90,53 @@ const store = createStore({
         )
         .then((res) => console.log(res))
         .catch((error) => console.log(error));
+    },
+    logout({ commit }) {
+      commit('clearAuthData');
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      router.replace('/');
+    },
+    autoLogin({ commit }) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return;
+      }
+      const userId = localStorage.getItem('userId');
+      commit('authUser', {
+        token,
+        userId,
+      });
+    },
+    fetchUser({ commit, state }) {
+      if (!state.idToken) {
+        return;
+      }
+      const email = localStorage.getItem('email');
+      axios
+        .get(
+          `https://pmogs-1704c.firebaseio.com/users.json?orderBy="email"&equalTo="${email}"`
+        )
+        .then((res) => {
+          const data = res.data;
+          const users = [];
+          for (let key in data) {
+            const user = data[key];
+            user.id = key;
+            users.push(user);
+            console.log(users);
+          }
+          commit('storeUser', users[0]);
+        })
+        .catch((error) => console.log(error));
+    },
+  },
+  getters: {
+    isAuthenticated(state) {
+      return state.idToken !== null;
+    },
+    user(state) {
+      return state.user;
     },
   },
 });
