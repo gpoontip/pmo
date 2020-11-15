@@ -27,27 +27,27 @@ export default {
   name: 'HelloWorld',
   components: {
     Button,
-    InputText,
+    InputText
   },
   data() {
     return {
       email: null,
-      password: null,
+      password: null
     };
   },
   methods: {
     login() {
       this.$store.dispatch('login', {
         email: this.email,
-        password: this.password,
+        password: this.password
       });
     },
     register() {
       this.$store.dispatch('signup', {
         email: this.email,
-        password: this.password,
+        password: this.password
       });
-    },
-  },
+    }
+  }
 };
 </script>

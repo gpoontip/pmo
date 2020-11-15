@@ -13,7 +13,7 @@ export default {
   name: 'Home',
   components: {
     HelloWorld,
-    Login,
+    Login
   },
   computed: {
     name() {
@@ -21,15 +21,15 @@ export default {
     },
     auth() {
       return this.$store.getters.isAuthenticated;
-    },
+    }
   },
   watch: {
     auth: {
       immediate: true,
       handler(newVal) {
         if (newVal) this.$store.dispatch('fetchUser');
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
