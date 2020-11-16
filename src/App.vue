@@ -3,6 +3,7 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/users">Users</router-link> |
+      <router-link to="/create-booking">Create Booking</router-link> |
       <a v-if="auth" href="#" @click="$store.dispatch('logout')">Logout</a>
     </div>
     <router-view />
@@ -14,13 +15,13 @@ export default {
   name: 'App',
   data() {
     return {
-      displayConfirmation: false,
+      displayConfirmation: false
     };
   },
   computed: {
     auth() {
       return this.$store.getters.isAuthenticated;
-    },
+    }
   },
   methods: {
     openConfirmation() {
@@ -28,11 +29,11 @@ export default {
     },
     closeConfirmation() {
       this.displayConfirmation = false;
-    },
+    }
   },
   created() {
     this.$store.dispatch('autoLogin');
-  },
+  }
 };
 </script>
 

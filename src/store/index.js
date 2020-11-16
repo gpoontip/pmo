@@ -124,7 +124,6 @@ const store = createStore({
             const user = data[key];
             user.id = key;
             users.push(user);
-            console.log(users);
           }
           commit('storeUser', users[0]);
         })

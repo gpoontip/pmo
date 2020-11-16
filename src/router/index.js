@@ -1,13 +1,14 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Users from '@/views/Users.vue';
+import CreateBooking from '@/views/CreateBooking.vue';
 import store from '../store';
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: Home
   },
   {
     path: '/users',
@@ -19,13 +20,18 @@ const routes = [
       } else {
         next('/');
       }
-    },
+    }
   },
+  {
+    path: '/create-booking',
+    name: 'CreateBooking',
+    component: CreateBooking
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 });
 
 export default router;
