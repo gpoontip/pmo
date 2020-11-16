@@ -51,18 +51,18 @@ import { db } from '@/firebaseConfig';
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String,
+    msg: String
   },
   components: {
     Button,
-    Dialog,
+    Dialog
   },
   data() {
     return {
       displayConfirmation: false,
       date: new Date().toISOString().slice(0, 10),
       name: 'John Doe',
-      employeesData: [],
+      employeesData: []
     };
   },
   methods: {
@@ -92,7 +92,7 @@ export default {
             this.employeesData.push({
               id: doc.id,
               name: doc.data().name,
-              date: doc.data().date,
+              date: doc.data().date
             });
           });
         })
@@ -105,7 +105,7 @@ export default {
         .doc(id)
         .update({
           name: name,
-          date: date,
+          date: date
         })
         .then(() => {
           console.log('Document successfully updated!');
@@ -127,10 +127,10 @@ export default {
         .catch((error) => {
           console.error('Error removing document: ', error);
         });
-    },
+    }
   },
   mounted() {
     this.readEmployees();
-  },
+  }
 };
 </script>
