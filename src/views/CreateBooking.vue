@@ -4,17 +4,57 @@
 
 <script>
 import BookingForm from '@/components/BookingForm';
+import { db } from '@/firebaseConfig.js';
+
 export default {
   name: 'UserView',
   components: {
     BookingForm
   },
   methods: {
-    createBooking(formData) {
+    async createBooking(formData) {
       console.log(formData);
-      // create booking row
+
       // create location (if it doesn't exist)
-      // create testees (if they don't exist)
+      if (!formData.location.id) {
+        await db
+          .collection('locations')
+          .add(formData.location)
+          .then((docRef) => {
+            console.log('Location Document written with ID: ', docRef.id);
+            formData.location.id = docRef.id;
+          })
+          .catch((error) => {
+            console.error('Error adding document: ', error);
+          });
+      }
+
+      for await (const [key, row] of formData.testees.entries()) {
+        if (!formData.testees[key].id) {
+          await db
+            .collection('testees')
+            .add(row)
+            .then((docRef) => {
+              console.log('Testee Document written with ID: ', docRef.id);
+              formData.testees[key].id = docRef.id;
+            })
+            .catch((error) => {
+              console.error('Error adding document: ', error);
+            });
+        }
+      }
+
+      // create booking row
+      console.log(formData);
+      await db
+        .collection('bookings')
+        .add(formData)
+        .then((docRef) => {
+          console.log('Booking Document written with ID: ', docRef.id);
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error);
+        });
     }
   }
 };

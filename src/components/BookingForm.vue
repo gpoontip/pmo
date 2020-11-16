@@ -112,6 +112,7 @@ export default {
         type: '',
         amount: 0,
         location: {
+          id: null,
           name: '',
           address: '',
           city: '',
