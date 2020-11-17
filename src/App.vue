@@ -4,6 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/users">Users</router-link> |
       <router-link to="/create-booking">Create Booking</router-link> |
+      <router-link to="/requested-bookings">Requested Bookings</router-link> |
       <a v-if="auth" href="#" @click="$store.dispatch('logout')">Logout</a>
     </div>
     <router-view />

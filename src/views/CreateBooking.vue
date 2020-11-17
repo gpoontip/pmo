@@ -13,8 +13,6 @@ export default {
   },
   methods: {
     async createBooking(formData) {
-      console.log(formData);
-
       // create location (if it doesn't exist)
       if (!formData.location.id) {
         await db
@@ -45,12 +43,17 @@ export default {
       }
 
       // create booking row
-      console.log(formData);
+      // TODO: add status
+      // TODO: combine date/time
+      const ref = db.collection('bookings').doc();
+      const id = ref.id;
+      formData.id = id;
       await db
         .collection('bookings')
-        .add(formData)
-        .then((docRef) => {
-          console.log('Booking Document written with ID: ', docRef.id);
+        .doc(id)
+        .set(formData)
+        .then(() => {
+          console.log('Booking Document written with ID: ', id);
         })
         .catch((error) => {
           console.error('Error adding document: ', error);

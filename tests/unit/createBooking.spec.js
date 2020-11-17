@@ -3,22 +3,7 @@ import BookingForm from '@/components/BookingForm.vue';
 
 describe('BookingForm.vue', () => {
   const build = () => {
-    const options = {
-      data() {
-        return {
-          date: '',
-          time: '',
-          name: '',
-          type: '',
-          amount: '',
-          testingName: '',
-          testingAddress: '',
-          testingCity: '',
-          testingProvince: '',
-          testingPostalCode: ''
-        };
-      }
-    };
+    const options = {};
     const wrapper = mount(BookingForm, options);
 
     return {
