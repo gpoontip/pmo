@@ -1,6 +1,7 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 import router from '../router';
+import { db } from '@/firebaseConfig.js';
 
 const store = createStore({
   state() {
@@ -26,7 +27,7 @@ const store = createStore({
   },
   actions: {
     signup({ commit, dispatch }, authData) {
-      axios
+      return axios
         .post(
           `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.VUE_APP_APIKEY}`,
           {
@@ -44,19 +45,20 @@ const store = createStore({
           localStorage.setItem('token', res.data.idToken);
           localStorage.setItem('userId', res.data.localId);
           localStorage.setItem('email', res.data.email);
-          dispatch('storeUser', {
-            email: authData.email
-          });
+
+          // TODO add role
+          const user = { email: authData.email };
+          dispatch('storeUser', { user, id: res.data.localId });
 
           setTimeout(function () {
             // router.push('/dashboard');
             console.log('registered');
           }, 3000);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => Promise.reject(error));
     },
     login({ commit }, authData) {
-      axios
+      return axios
         .post(
           `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.VUE_APP_APIKEY}`,
           {
@@ -77,19 +79,22 @@ const store = createStore({
           //   router.push('/dashboard');
           console.log('authenticated');
         })
-        .catch((error) => console.log(error.message));
+        .catch((error) => Promise.reject(error));
     },
-    storeUser({ state }, userData) {
+    storeUser({ state }, { user, id }) {
       if (!state.idToken) {
         return;
       }
-      axios
-        .post(
-          `https://pmogs-1704c.firebaseio.com/users.json?auth=${state.idToken}`,
-          userData
-        )
-        .then((res) => console.log(res))
-        .catch((error) => console.log(error));
+
+      db.collection('users')
+        .doc(id)
+        .set(user)
+        .then(() => {
+          console.log('User Document written with ID: ', id);
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error);
+        });
     },
     logout({ commit }) {
       commit('clearAuthData');
@@ -113,18 +118,17 @@ const store = createStore({
         return;
       }
       const email = localStorage.getItem('email');
-      axios
-        .get(
-          `https://pmogs-1704c.firebaseio.com/users.json?orderBy="email"&equalTo="${email}"`
-        )
-        .then((res) => {
-          const data = res.data;
+
+      db.collection('users')
+        .where('email', '==', email)
+        .get()
+        .then((querySnapshot) => {
           const users = [];
-          for (let key in data) {
-            const user = data[key];
-            user.id = key;
+          querySnapshot.forEach(function (doc) {
+            const user = doc.data();
+            user.id = doc.id;
             users.push(user);
-          }
+          });
           commit('storeUser', users[0]);
         })
         .catch((error) => console.log(error));

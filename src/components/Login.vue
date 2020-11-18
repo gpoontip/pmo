@@ -1,6 +1,6 @@
 <template>
   <div class="p-d-flex p-jc-center">
-    <form>
+    <form @submit.prevent="login">
       <div class="p-fluid">
         <div class="p-field">
           <InputText type="text" v-model="email" placeholder="Email" />
@@ -13,21 +13,24 @@
           />
         </div>
       </div>
-      <Button label="Login" @click="login" />
+      <Button label="Login" type="submit" />
       <Button label="Register" @click="register" />
     </form>
+    <Toast />
   </div>
 </template>
 
 <script>
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import Toast from 'primevue/toast';
 
 export default {
   name: 'HelloWorld',
   components: {
     Button,
-    InputText
+    InputText,
+    Toast
   },
   data() {
     return {
@@ -37,16 +40,43 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch('login', {
-        email: this.email,
-        password: this.password
-      });
+      this.$store
+        .dispatch('login', {
+          email: this.email,
+          password: this.password
+        })
+        .then(() => {
+          this.$toast.add({
+            severity: 'success',
+            summary: 'Success Message',
+            detail: 'Login Success',
+            life: 3000
+          });
+        })
+        .catch((err) => {
+          this.$toast.add({
+            severity: 'error',
+            summary: 'Login Failed',
+            detail: err.message,
+            life: 3000
+          });
+        });
     },
     register() {
-      this.$store.dispatch('signup', {
-        email: this.email,
-        password: this.password
-      });
+      this.$store
+        .dispatch('signup', {
+          email: this.email,
+          password: this.password
+        })
+        .catch((err) => {
+          console.log('catch', err);
+          this.$toast.add({
+            severity: 'error',
+            summary: 'Registration Failed',
+            detail: err.message,
+            life: 3000
+          });
+        });
     }
   }
 };
