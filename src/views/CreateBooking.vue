@@ -44,17 +44,14 @@ export default {
 
       // create booking row
       // TODO: add status
-      // TODO: add lab
       // TODO: combine date/time
-      const ref = db.collection('bookings').doc();
-      const id = ref.id;
-      formData.id = id;
+      // TODO: add empty lab field
+      // TODO: add empty testers []
       await db
         .collection('bookings')
-        .doc(id)
-        .set(formData)
-        .then(() => {
-          console.log('Booking Document written with ID: ', id);
+        .add(formData)
+        .then((docRef) => {
+          console.log('Booking Document written with ID: ', docRef.id);
         })
         .catch((error) => {
           console.error('Error adding document: ', error);

@@ -19,9 +19,9 @@ export default {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          //   console.log(doc.id, ' => ', doc.data());
-          this.bookings.push(doc.data());
+          const booking = doc.data();
+          booking.id = doc.id;
+          this.bookings.push(booking);
         });
       });
   }
