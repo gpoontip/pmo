@@ -44,6 +44,7 @@ export default {
 
       // create booking row
       // TODO: add status
+      // TODO: add lab
       // TODO: combine date/time
       const ref = db.collection('bookings').doc();
       const id = ref.id;
