@@ -1,7 +1,7 @@
 <template>
   <p>Lab where samples are being sent:</p>
   <form @submit.prevent="$emit('submitted', lab)">
-    <InputText v-model="lab" placeholder="Name" />
+    <InputText v-model="lab" placeholder="Location" />
     <Button type="submit">Save</Button>
   </form>
 </template>
@@ -18,7 +18,7 @@ export default {
       default: new Object()
     }
   },
-  emits: ['submitted', 'update:booking'],
+  emits: ['submitted'],
   setup(props) {
     const lab = ref('');
 
