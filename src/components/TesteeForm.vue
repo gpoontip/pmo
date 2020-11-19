@@ -76,7 +76,9 @@ export default {
         mobile: null,
         email: null,
         address: null,
-        comments: null
+        comments: null,
+        status: null,
+        result: null
       }
     };
   },
