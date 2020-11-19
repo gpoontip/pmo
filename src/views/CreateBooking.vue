@@ -13,7 +13,8 @@ export default {
   },
   methods: {
     async createBooking(formData) {
-      // create location (if it doesn't exist)
+      // create location
+      // TODO: define if it exists by passing ID via autocomplete
       if (!formData.location.id) {
         await db
           .collection('locations')
@@ -27,7 +28,9 @@ export default {
           });
       }
 
+      // loop through all entered testees
       for await (const [key, row] of formData.testees.entries()) {
+        // TODO: define if it exists by passing ID via autocomplete
         if (!formData.testees[key].id) {
           await db
             .collection('testees')
@@ -43,10 +46,7 @@ export default {
       }
 
       // create booking row
-      // TODO: add status
       // TODO: combine date/time
-      // TODO: add empty lab field
-      // TODO: add empty testers []
       await db
         .collection('bookings')
         .add(formData)

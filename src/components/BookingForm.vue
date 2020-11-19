@@ -119,7 +119,10 @@ export default {
           province: '',
           postalCode: ''
         },
-        testees: []
+        testees: [],
+        status: 'Requested',
+        lab: null,
+        testers: []
       }
     };
   },
