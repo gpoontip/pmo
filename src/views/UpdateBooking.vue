@@ -3,7 +3,11 @@
   <BookingInfo :booking="booking" />
   <AssignLab @submitted="saveLab" :booking="booking" />
   <AssignTesters @submitted="saveTesters" :booking="booking" :users="users" />
-  <UpdateTestees />
+  <UpdateTestees
+    @status="saveTestees"
+    @result="saveTestees"
+    :booking="booking"
+  />
   <Toast />
 </template>
 
@@ -29,22 +33,18 @@ export default {
 
     onBeforeMount(() => {
       if (route.params.id) {
+        // listen for real time updates to booking document
         unsubscribe = db
           .collection('bookings')
           .doc(route.params.id)
-          .onSnapshot(
-            {
-              // Listen for document metadata changes
-              includeMetadataChanges: true
-            },
-            function (doc) {
-              if (doc.exists) {
-                booking.value = doc.data();
-              } else {
-                console.log('No such document!');
-              }
+          .onSnapshot({ includeMetadataChanges: true }, (doc) => {
+            if (doc.exists) {
+              booking.value = doc.data();
+              booking.value.id = doc.id;
+            } else {
+              console.log('No such document!');
             }
-          );
+          });
       }
     });
 
@@ -87,8 +87,12 @@ export default {
       updateBooking({ lab }, 'Lab Saved Successully');
     }
 
-    function saveTesters(users) {
-      updateBooking({ testers: users }, 'Testers Updated');
+    function saveTesters(testers) {
+      updateBooking({ testers }, 'Testers Updated');
+    }
+
+    function saveTestees(testees) {
+      updateBooking({ testees }, 'Testee(s) Updated');
     }
 
     function updateBooking(params, msg) {
@@ -105,7 +109,7 @@ export default {
         });
     }
 
-    return { booking, users, saveLab, saveTesters };
+    return { booking, users, saveLab, saveTesters, saveTestees };
   }
 };
 </script>
