@@ -1,6 +1,6 @@
 <template>
   <h2>Booking Info</h2>
-  <span v-if="booking.id">{{ booking.id }}</span>
+  <p v-if="booking.id"><b>Status:</b> {{ booking.status }}</p>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <h2>Testees</h2>
-  <p><Button>Add Testee</Button></p>
+  <p><Button @click="display = true">Add Testee</Button></p>
   <p>
     <Dropdown
       v-model="updateAllStatus"
@@ -41,7 +41,20 @@
         />
       </template>
     </Column>
+    <Column header="Actions">
+      <template #body="slotProps">
+        <Button
+          label="Delete"
+          icon="pi pi-times"
+          class="p-button-danger p-button-outlined"
+          @click="deleteTestee(slotProps.data.id)"
+        />
+      </template>
+    </Column>
   </DataTable>
+  <Dialog header="Header" v-model:visible="display">
+    <TesteeForm @submitted="addTestee" />
+  </Dialog>
 </template>
 
 <script>
@@ -50,17 +63,28 @@ import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Dialog from 'primevue/dialog';
 import UpdateDropdown from '@/components/UpdateDropdown';
+import TesteeForm from './TesteeForm.vue';
 export default {
-  components: { Dropdown, Button, DataTable, Column, UpdateDropdown },
+  components: {
+    Dropdown,
+    Button,
+    DataTable,
+    Column,
+    Dialog,
+    UpdateDropdown,
+    TesteeForm
+  },
   props: {
     booking: {
       type: Object,
       default: new Object()
     }
   },
-  emits: ['status', 'result'],
+  emits: ['save', 'add', 'delete'],
   setup(props, { emit }) {
+    const display = ref(false);
     const updateAllStatus = ref(null);
     const updateAllResult = ref(null);
     const statuses = ref([
@@ -83,7 +107,7 @@ export default {
         return row;
       });
 
-      emit(field, testees); // field types = status or result
+      emit('save', testees); // field types = status or result
     }
 
     function updateAllTestees(type) {
@@ -96,20 +120,35 @@ export default {
         return row;
       });
 
-      emit(type, testees);
+      emit('save', testees);
 
       // clear input after button click
       if (type === 'status') updateAllStatus.value = null;
       else if (type === 'result') updateAllResult.value = null;
     }
 
+    function addTestee(testee) {
+      display.value = false;
+      emit('add', testee);
+    }
+
+    function deleteTestee(testeeId) {
+      const testees = props.booking.testees.filter((testee) => {
+        if (testee.id !== testeeId) return true;
+      });
+      emit('save', testees);
+    }
+
     return {
+      display,
       updateAllStatus,
       updateAllResult,
       statuses,
       results,
       saveTestee,
-      updateAllTestees
+      updateAllTestees,
+      addTestee,
+      deleteTestee
     };
   }
 };

@@ -59,7 +59,12 @@ import Button from 'primevue/button';
 import Textarea from 'primevue/textarea';
 export default {
   name: 'TesteeForm',
-  props: ['counter'],
+  props: {
+    counter: {
+      type: Number,
+      default: 0
+    }
+  },
   components: {
     InputText,
     Textarea,
@@ -77,8 +82,8 @@ export default {
         email: null,
         address: null,
         comments: null,
-        status: null,
-        result: null
+        status: 'Pending',
+        result: 'Pending'
       }
     };
   },
