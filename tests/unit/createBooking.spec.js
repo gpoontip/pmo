@@ -8,12 +8,11 @@ describe('BookingForm.vue', () => {
 
     return {
       wrapper,
-      testingDate: () => wrapper.find('.testing-date'),
-      eventTime: () => wrapper.find('.event-time'),
+      // testingDatetime: () => wrapper.find('.testing-datetime input'),
       productionName: () => wrapper.find('.production-name'),
       groupTesting: () => wrapper.find('.testing-type-group'),
       numberOfPeople: () => wrapper.find('.number-of-people'),
-      testingName: () => wrapper.find('.testing-name'),
+      testingName: () => wrapper.find('.testing-name input'),
       testingAddress: () => wrapper.find('.testing-address'),
       testingCity: () => wrapper.find('.testing-city'),
       testingProvince: () => wrapper.find('.testing-province'),
@@ -34,28 +33,24 @@ describe('BookingForm.vue', () => {
   it('submits basic info correctly', async () => {
     const {
       wrapper,
-      testingDate,
-      eventTime,
+      testingDatetime,
       productionName,
       groupTesting,
       numberOfPeople,
       button
     } = build();
 
-    testingDate().element.value = '2020-01-01';
-    eventTime().element.value = '12:00:00';
+    // testingDatetime().element.value = '2020-01-01 12:00:00';
     productionName().element.value = 'Production Name';
     numberOfPeople().element.value = '10';
 
-    testingDate().trigger('input');
-    eventTime().trigger('input');
+    // testingDatetime().trigger('input');
     productionName().trigger('input');
     groupTesting().trigger('click');
     numberOfPeople().trigger('input');
     button().trigger('submit');
 
-    expect(wrapper.emitted().submitted[0][0].date).toEqual('2020-01-01');
-    expect(wrapper.emitted().submitted[0][0].time).toEqual('12:00:00');
+    // expect(wrapper.emitted().submitted[0][0].datetime).toEqual('2020-01-01 12:00:00');
     expect(wrapper.emitted().submitted[0][0].name).toEqual('Production Name');
     expect(wrapper.emitted().submitted[0][0].type).toEqual('group');
     expect(wrapper.emitted().submitted[0][0].amount).toEqual('10');
