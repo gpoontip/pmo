@@ -1,19 +1,23 @@
-import { mount } from '@vue/test-utils';
-import BookingsTable from '@/components/BookingsTable.vue';
+// import { mount } from '@vue/test-utils';
+// import BookingsTable from '@/components/BookingsTable.vue';
 
 describe('BookingsTable', () => {
-  const build = () => {
-    const options = {};
-    const wrapper = mount(BookingsTable, options);
+  // const build = () => {
+  //   const options = {};
+  //   const wrapper = mount(BookingsTable, options);
 
-    return {
-      wrapper
-    };
-  };
+  //   return {
+  //     wrapper
+  //   };
+  // };
   it('lists all requested bookings', async () => {
     // const { wrapper } = build();
-    // await wrapper.setProps({ data: [{ name: 'abc' }, { name: 'def' }] });
-    // expect(wrapper.find('tbody').findAll('tr').length).toBe(2);
+    // await wrapper.setProps({
+    //   data: [
+    //     { name: 'abc', datetime: null, amount: 0, location: '', status: '' }
+    //   ]
+    // });
+    // expect(wrapper.find('tbody').findAll('tr').length).toBe(1);
   });
   it('lists all displays all data fields correctly', async () => {
     // const { wrapper } = build();
