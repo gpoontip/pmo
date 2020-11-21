@@ -1,8 +1,10 @@
 <template>
-  <booking-form @submitted="createBooking" />
+  <booking-form @submitted="createBooking" :locations="locations" />
 </template>
 
 <script>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import BookingForm from '@/components/BookingForm';
 import { db } from '@/firebaseConfig.js';
 
@@ -11,8 +13,23 @@ export default {
   components: {
     BookingForm
   },
-  methods: {
-    async createBooking(formData) {
+  setup() {
+    const router = useRouter();
+    const locations = ref([]);
+
+    db.collection('locations')
+      .orderBy('name')
+      .get()
+      .then((querySnapshot) => {
+        locations.value = [];
+        querySnapshot.forEach((doc) => {
+          const user = doc.data();
+          user.id = doc.id;
+          locations.value.push(user);
+        });
+      });
+
+    async function createBooking(formData) {
       // create location
       // TODO: define if it exists by passing ID via autocomplete
       if (!formData.location.id) {
@@ -52,11 +69,14 @@ export default {
         .add(formData)
         .then((docRef) => {
           console.log('Booking Document written with ID: ', docRef.id);
+          router.push({ name: 'RequestedBookings' });
         })
         .catch((error) => {
           console.error('Error adding document: ', error);
         });
     }
+
+    return { locations, createBooking };
   }
 };
 </script>

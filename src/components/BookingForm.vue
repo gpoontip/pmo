@@ -1,23 +1,24 @@
 <template>
   <form @submit.prevent="$emit('submitted', formData)">
     <div class="p-input-filled">
-      <InputText
-        placeholder="Testing Date"
-        type="text"
-        class="testing-date"
-        v-model="formData.date"
-      />
-      <InputText
-        placeholder="Event Time"
-        type="text"
-        class="event-time"
-        v-model="formData.time"
+      <Calendar
+        v-model="formData.datetime"
+        placeholder="Testing Date/Time"
+        :showTime="true"
+        :showSeconds="true"
+        class="testing-datetime"
       />
       <InputText
         placeholder="Name of the production"
         type="text"
         class="production-name"
         v-model="formData.name"
+      />
+      <InputText
+        placeholder="Number of people requiring testing"
+        type="number"
+        class="number-of-people"
+        v-model="formData.amount"
       />
       <div class="radio-group">
         <RadioButton
@@ -38,18 +39,15 @@
         />
         <label for="testing-type-individual">Individual Testing</label>
       </div>
-      <InputText
-        placeholder="Number of people requiring testing"
-        type="text"
-        class="number-of-people"
-        v-model="formData.amount"
-      />
       <h2>Testing Location</h2>
-      <InputText
-        placeholder="Name/Description"
-        type="text"
-        class="testing-name"
+      <AutoComplete
         v-model="formData.location.name"
+        :suggestions="filteredLocations"
+        @complete="searchLocations($event)"
+        @item-select="selectLocation($event)"
+        placeholder="Name/Description"
+        field="name"
+        class="testing-name"
       />
       <InputText
         placeholder="Street Address"
@@ -91,9 +89,12 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import RadioButton from 'primevue/radiobutton';
+import Calendar from 'primevue/calendar';
+import AutoComplete from 'primevue/autocomplete';
 import TesteeForm from './TesteeForm.vue';
 export default {
   name: 'BookingForm',
@@ -101,41 +102,77 @@ export default {
     Button,
     InputText,
     RadioButton,
+    Calendar,
+    AutoComplete,
     TesteeForm
   },
-  data() {
-    return {
-      formData: {
-        date: '',
-        time: '',
-        name: '',
-        type: '',
-        amount: 0,
-        location: {
-          id: null,
-          name: '',
-          address: '',
-          city: '',
-          province: '',
-          postalCode: ''
-        },
-        testees: [],
-        status: 'Requested',
-        lab: null,
-        testers: []
-      }
-    };
+  props: {
+    locations: {
+      type: Array,
+      default: new Array()
+    }
   },
-  computed: {
-    numberOfTestees() {
-      if (parseInt(this.formData.amount)) return parseInt(this.formData.amount);
+  setup(props) {
+    const formData = ref({
+      datetime: null,
+      name: null,
+      type: null,
+      amount: null,
+      location: {
+        id: null,
+        name: null,
+        address: null,
+        city: null,
+        province: null,
+        postalCode: null
+      },
+      testees: [],
+      status: 'Requested',
+      lab: null,
+      testers: []
+    });
+
+    const filteredLocations = ref([]);
+
+    const numberOfTestees = computed(() => {
+      if (parseInt(formData.value.amount))
+        return parseInt(formData.value.amount);
       else return 0;
+    });
+
+    function addTestee(testee, counter) {
+      formData.value.testees[counter - 1] = testee;
     }
-  },
-  methods: {
-    addTestee(formData, counter) {
-      this.formData.testees[counter - 1] = formData;
+
+    function searchLocations(event) {
+      if (!event.query.trim().length) {
+        filteredLocations.value = [...props.locations];
+      } else {
+        filteredLocations.value = props.locations.filter((location) => {
+          if (!location.name) return false;
+          return location.name
+            .toLowerCase()
+            .startsWith(event.query.toLowerCase());
+        });
+      }
     }
+
+    function selectLocation(event) {
+      formData.value.location.id = event.value.id;
+      formData.value.location.address = event.value.address;
+      formData.value.location.city = event.value.city;
+      formData.value.location.province = event.value.province;
+      formData.value.location.postalCode = event.value.postalCode;
+    }
+
+    return {
+      formData,
+      filteredLocations,
+      numberOfTestees,
+      addTestee,
+      searchLocations,
+      selectLocation
+    };
   }
 };
 </script>
@@ -154,5 +191,16 @@ export default {
 }
 .radio-group {
   margin-bottom: 0.5rem;
+}
+.p-calendar {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+.p-autocomplete {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  ::v-deep .p-inputtext {
+    width: 100%;
+  }
 }
 </style>
