@@ -33,7 +33,7 @@ describe('BookingForm.vue', () => {
   it('submits basic info correctly', async () => {
     const {
       wrapper,
-      testingDatetime,
+      // testingDatetime,
       productionName,
       groupTesting,
       numberOfPeople,
