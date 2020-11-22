@@ -69,7 +69,7 @@ export default {
         .add(formData)
         .then((docRef) => {
           console.log('Booking Document written with ID: ', docRef.id);
-          router.push({ name: 'RequestedBookings' });
+          router.push({ name: 'UpdateBooking', params: { id: docRef.id } });
         })
         .catch((error) => {
           console.error('Error adding document: ', error);
