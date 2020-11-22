@@ -52,7 +52,7 @@
     >
       <template #body="slotProps">
         <span class="p-column-title">Date/Time</span>
-        {{ slotProps.data.datetime }}
+        <span class="date">{{ slotProps.data.datetime }}</span>
       </template>
       <template #filter>
         <Calendar
@@ -157,6 +157,7 @@ import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import firebase from 'firebase/app';
+import { formatDate } from '@/helpers/date';
 export default {
   name: 'BookingsTable',
   components: { DataTable, Column, Button, InputText, Calendar },
@@ -174,7 +175,7 @@ export default {
     const dataFormatted = computed(() => {
       return props.data.map((row) => {
         if (row.datetime instanceof firebase.firestore.Timestamp)
-          row.datetime = formatDate(row.datetime.toDate(), true);
+          row.datetime = formatDate({ date: row.datetime.toDate() });
 
         return row;
       });
@@ -194,32 +195,6 @@ export default {
       }
 
       return value === formatDate(filter);
-    }
-
-    function formatDate(date, string = false) {
-      if (date instanceof Date) {
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
-
-        if (month < 10) {
-          month = '0' + month;
-        }
-
-        if (day < 10) {
-          day = '0' + day;
-        }
-
-        if (string) {
-          var options = {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-          };
-          return date.toLocaleDateString('en-CA', options);
-        }
-        return date.getFullYear() + '-' + month + '-' + day;
-      }
-      return date;
     }
 
     function exportCSV() {
@@ -252,6 +227,9 @@ export default {
     td {
       font-weight: 400;
     }
+  }
+  .date {
+    white-space: nowrap;
   }
 }
 /* Responsive */
