@@ -9,7 +9,7 @@
         class="testing-datetime"
       />
       <InputText
-        placeholder="Name of the production"
+        placeholder="Name of Project"
         type="text"
         class="production-name"
         v-model="formData.name"
@@ -26,8 +26,7 @@
           name="testingType"
           class="testing-type-group"
           v-model="formData.type"
-          value="group"
-          label="Group Testing"
+          value="Group Testing"
         />
         <label for="testing-type-group">Group Testing</label>
         <RadioButton
@@ -35,7 +34,7 @@
           name="testingType"
           class="testing-type-individual"
           v-model="formData.type"
-          value="individual"
+          value="Individual Testing"
         />
         <label for="testing-type-individual">Individual Testing</label>
       </div>
@@ -199,7 +198,7 @@ export default {
 .p-autocomplete {
   width: 100%;
   margin-bottom: 0.5rem;
-  ::v-deep .p-inputtext {
+  ::v-deep(.p-inputtext) {
     width: 100%;
   }
 }
