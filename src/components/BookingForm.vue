@@ -83,12 +83,17 @@
         </li>
       </ol>
     </div>
-    <Button type="submit" class="submit">Request Booking</Button>
+    <Button
+      type="submit"
+      class="submit"
+      :disabled="disabled"
+      label="Request Booking"
+    />
   </form>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import RadioButton from 'primevue/radiobutton';
@@ -109,6 +114,14 @@ export default {
     locations: {
       type: Array,
       default: new Array()
+    },
+    date: {
+      type: Date,
+      default: new Date()
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {
@@ -137,6 +150,11 @@ export default {
       if (parseInt(formData.value.amount))
         return parseInt(formData.value.amount);
       else return 0;
+    });
+
+    watchEffect(() => {
+      // prepopulate based on calendar
+      if (props.date) formData.value.datetime = props.date;
     });
 
     function addTestee(testee, counter) {

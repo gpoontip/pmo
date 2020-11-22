@@ -1,48 +1,34 @@
 <template>
   <h1>Requested Bookings</h1>
-  <bookings-table :data="bookings" @delete="deleteBooking" />
-  <Dialog
-    header="Confirmation"
-    v-model:visible="display"
-    :style="{ width: '350px' }"
-    :modal="true"
-  >
-    <div class="confirmation-content">
-      <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
-      <span>Are you sure you want to delete the booking?</span>
-    </div>
-    <template #footer>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        @click="display = false"
-        class="p-button-text"
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        @click="confirm"
-        class="p-button-text"
-        autofocus
-        :disabled="disabled"
-      />
-    </template>
-  </Dialog>
+  <BookingsTable :data="bookings" @delete="deleteBooking" />
+  <ConfirmDelete
+    :display="displayConfirmDelete"
+    :disable="disableConfirmButton"
+    @confirm="confirm"
+    @display="display"
+  />
 </template>
 
 <script>
 import { ref } from 'vue';
 import BookingsTable from '@/components/BookingsTable.vue';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
+import ConfirmDelete from '@/components/ConfirmDelete.vue';
+import { useToast } from 'primevue/usetoast.js';
 import { db } from '@/firebaseConfig.js';
+import { useDeleteBooking } from '@/services/useDeleteBooking';
+
 export default {
   name: 'RequestedBookings',
-  components: { BookingsTable, Dialog, Button },
+  components: { BookingsTable, ConfirmDelete },
   setup() {
     const bookings = ref([]);
-    const display = ref(false);
-    const bookingID = ref(null);
+    const toast = useToast();
+    const {
+      disableConfirmButton,
+      displayConfirmDelete,
+      deleteBooking,
+      confirmDeleteBooking
+    } = useDeleteBooking();
 
     getBookings();
 
@@ -59,26 +45,36 @@ export default {
         });
     }
 
-    function deleteBooking(id) {
-      display.value = true;
-      bookingID.value = id;
-    }
-
     function confirm() {
-      db.collection('bookings')
-        .doc(bookingID.value)
-        .delete()
+      confirmDeleteBooking()
         .then(() => {
           getBookings();
-          display.value = false;
-          console.log('Document successfully deleted: ', bookingID.value);
+          displayConfirmDelete.value = false;
+          disableConfirmButton.value = false;
+          toast.add({
+            severity: 'success',
+            summary: 'Success Message',
+            detail: 'Document successfully deleted',
+            life: 3000
+          });
         })
         .catch((error) => {
           console.error('Error removing document: ', error);
         });
     }
 
-    return { bookings, display, deleteBooking, confirm };
+    function display(value) {
+      displayConfirmDelete.value = value;
+    }
+
+    return {
+      bookings,
+      displayConfirmDelete,
+      deleteBooking,
+      confirm,
+      display,
+      disableConfirmButton
+    };
   }
 };
 </script>

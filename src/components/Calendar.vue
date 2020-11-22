@@ -21,7 +21,7 @@ export default {
       default: new Array()
     }
   },
-  emits: ['click', 'fetch'],
+  emits: ['click', 'fetch', 'create'],
   setup(props, { emit }) {
     const options = ref({
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -42,6 +42,9 @@ export default {
         const start = e.view.activeStart;
         const end = e.view.activeEnd;
         emit('fetch', { start, end });
+      },
+      dateClick: (e) => {
+        emit('create', e.date);
       }
     });
 

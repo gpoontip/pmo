@@ -13,9 +13,9 @@ export function formatDate({ date, time, string }) {
     }
 
     if (time) {
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
-      const seconds = date.getSeconds();
+      const hours = ('0' + date.getHours()).slice(-2);
+      const minutes = ('0' + date.getMinutes()).slice(-2);
+      const seconds = ('0' + date.getSeconds()).slice(-2);
       return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     }
 
