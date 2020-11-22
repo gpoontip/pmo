@@ -1,6 +1,4 @@
 <template>
-  <h2>Assign Testers</h2>
-
   <form @submit.prevent="onSubmit">
     <AutoComplete
       :multiple="true"

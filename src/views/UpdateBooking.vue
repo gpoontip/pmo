@@ -1,8 +1,11 @@
 <template>
   <h1>Update Booking</h1>
+  <h2>Booking Info</h2>
   <BookingInfo :booking="booking" />
   <AssignLab @submitted="saveLab" :booking="booking" />
+  <h2>Assign Testers</h2>
   <AssignTesters @submitted="saveTesters" :booking="booking" :users="users" />
+  <h2>Testees</h2>
   <UpdateTestees @save="saveTestees" @add="addTestee" :booking="booking" />
   <p v-if="booking.id">
     <Button @click="$router.push({ name: 'RequestedBookings' })">Done</Button>

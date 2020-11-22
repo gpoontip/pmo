@@ -1,5 +1,4 @@
 <template>
-  <h2>Testees</h2>
   <p><Button @click="display = true">Add Testee</Button></p>
   <p>
     <Dropdown
