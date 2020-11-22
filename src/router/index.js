@@ -1,10 +1,12 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Users from '@/views/Users.vue';
-import CreateBooking from '@/views/CreateBooking.vue';
-import RequestedBookings from '@/views/RequestedBookings.vue';
-import UpdateBooking from '@/views/UpdateBooking.vue';
 import store from '../store';
+
+function loadView(view) {
+  return () =>
+    import(/* webpackChunkName: "view-[request]" */ `@/views/${view}.vue`);
+}
 
 const routes = [
   {
@@ -27,23 +29,26 @@ const routes = [
   {
     path: '/create-booking',
     name: 'CreateBooking',
-    component: CreateBooking
+    component: loadView('CreateBooking')
   },
   {
     path: '/requested-bookings',
     name: 'RequestedBookings',
-    component: RequestedBookings
+    component: loadView('RequestedBookings')
   },
   {
     path: '/update-booking/:id',
     name: 'UpdateBooking',
-    component: UpdateBooking
+    component: loadView('UpdateBooking')
+  },
+  {
+    path: '/calendar',
+    name: 'Calendar',
+    component: loadView('Calendar')
   }
 ];
 
-const router = createRouter({
+export default createRouter({
   history: createWebHistory(),
   routes
 });
-
-export default router;

@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
+      <router-link to="/calendar">Calendar</router-link> |
       <router-link to="/users">Users</router-link> |
       <router-link to="/create-booking">Create Booking</router-link> |
       <router-link to="/requested-bookings">Requested Bookings</router-link> |
