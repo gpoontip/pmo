@@ -1,20 +1,21 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/calendar">Calendar</router-link> |
-      <router-link to="/users">Users</router-link> |
-      <router-link to="/create-booking">Create Booking</router-link> |
-      <router-link to="/requested-bookings">Requested Bookings</router-link> |
-      <a v-if="auth" href="#" @click="$store.dispatch('logout')">Logout</a>
-    </div>
-    <router-view />
+    <TheHeader />
+    <TheMenu />
+    <section id="content">
+      <router-view />
+    </section>
+    <TheFooter />
   </div>
 </template>
 
 <script>
+import TheHeader from '@/components/TheHeader';
+import TheMenu from '@/components/TheMenu';
+import TheFooter from '@/components/TheFooter';
 export default {
   name: 'App',
+  components: { TheHeader, TheMenu, TheFooter },
   data() {
     return {
       displayConfirmation: false
@@ -39,18 +40,21 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import '@/scss/_variables.scss';
+body {
+  margin: 0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
 }
-
-.confirmation-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+#content {
+  max-width: $app_width;
+  padding: 0 1rem;
+  margin: 0 auto;
+  margin-top: 2rem;
 }
 </style>
