@@ -1,7 +1,22 @@
 import { createWebHistory, createRouter } from 'vue-router';
-import Home from '@/views/Home.vue';
-import Users from '@/views/Users.vue';
 import store from '../store';
+
+let entryUrl = store.state.entryUrl;
+const guard = async (to, from, next) => {
+  if (store.state.idToken) {
+    if (entryUrl) {
+      const url = entryUrl;
+      entryUrl = null;
+      return next(url); // goto stored url
+    } else {
+      return next(); // all is fine
+    }
+  } else {
+    entryUrl = to.path; // store entry url before redirect
+    store.commit('storeEntryUrl', entryUrl);
+    next('/login');
+  }
+};
 
 function loadView(view) {
   return () =>
@@ -12,39 +27,43 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: loadView('Home'),
+    beforeEnter: guard
   },
   {
     path: '/users',
     name: 'Users',
-    component: Users,
-    beforeEnter(to, from, next) {
-      if (store.state.idToken) {
-        next();
-      } else {
-        next('/');
-      }
-    }
+    component: loadView('Users'),
+    beforeEnter: guard
   },
   {
     path: '/create-booking',
     name: 'CreateBooking',
-    component: loadView('CreateBooking')
+    component: loadView('CreateBooking'),
+    beforeEnter: guard
   },
   {
     path: '/requested-bookings',
     name: 'RequestedBookings',
-    component: loadView('RequestedBookings')
+    component: loadView('RequestedBookings'),
+    beforeEnter: guard
   },
   {
     path: '/update-booking/:id',
     name: 'UpdateBooking',
-    component: loadView('UpdateBooking')
+    component: loadView('UpdateBooking'),
+    beforeEnter: guard
   },
   {
     path: '/calendar',
     name: 'Calendar',
-    component: loadView('Calendar')
+    component: loadView('Calendar'),
+    beforeEnter: guard
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: loadView('Login')
   }
 ];
 

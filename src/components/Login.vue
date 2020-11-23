@@ -52,6 +52,7 @@ export default {
             detail: 'Login Success',
             life: 3000
           });
+          this.$router.push(this.$store.state.entryUrl);
         })
         .catch((err) => {
           this.$toast.add({

@@ -8,7 +8,8 @@ const store = createStore({
     return {
       idToken: null,
       userId: null,
-      user: null
+      user: null,
+      entryUrl: '/'
     };
   },
   mutations: {
@@ -23,6 +24,10 @@ const store = createStore({
       state.idToken = null;
       state.userId = null;
       state.user = null;
+      state.entryUrl = '/';
+    },
+    storeEntryUrl(state, url) {
+      state.entryUrl = url;
     }
   },
   actions: {
@@ -37,7 +42,7 @@ const store = createStore({
           }
         )
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           commit('authUser', {
             token: res.data.idToken,
             userId: res.data.localId
@@ -68,7 +73,7 @@ const store = createStore({
           }
         )
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           localStorage.setItem('token', res.data.idToken);
           localStorage.setItem('userId', res.data.localId);
           localStorage.setItem('email', res.data.email);
@@ -100,7 +105,7 @@ const store = createStore({
       commit('clearAuthData');
       localStorage.removeItem('token');
       localStorage.removeItem('userId');
-      router.replace('/');
+      router.replace('/login');
     },
     autoLogin({ commit }) {
       const token = localStorage.getItem('token');
