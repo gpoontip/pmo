@@ -13,7 +13,7 @@
           />
         </div>
       </div>
-      <Button label="Login" type="submit" />
+      <Button label="Login" type="submit" class="p-mr-3" />
       <Button label="Register" @click="register" />
     </form>
     <Toast />

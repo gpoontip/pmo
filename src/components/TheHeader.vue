@@ -1,12 +1,15 @@
 <template>
   <header class="p-pt-3 p-pb-1">
     <div id="header" class="p-d-flex p-jc-between">
-      <Logo :height="70" :width="200" />
+      <router-link :to="{ name: 'Calendar' }">
+        <Logo :height="70" :width="200" />
+      </router-link>
       <div>
         <Button
           icon="pi pi-user"
           class="p-button-rounded p-button-text"
           v-tooltip.top="'Account'"
+          @click="click('Account')"
         />
         <Button
           @click="toggle"
@@ -27,7 +30,7 @@
                 label="Patients"
                 icon="pi pi-users"
                 class="p-button-text p-button-sm"
-                @click="click('Home')"
+                @click="click('Patients')"
               />
             </li>
             <li>
@@ -35,7 +38,7 @@
                 label="Locations"
                 icon="pi pi-map-marker"
                 class="p-button-text p-button-sm"
-                @click="click('Home')"
+                @click="click('Locations')"
               />
             </li>
             <li>
@@ -104,9 +107,9 @@ ul {
   ::v-deep(.p-overlaypanel-content) {
     padding: 0.5rem;
   }
-}
-.p-button {
-  width: 100%;
-  text-align: left;
+  .p-button {
+    width: 100%;
+    text-align: left;
+  }
 }
 </style>

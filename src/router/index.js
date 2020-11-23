@@ -27,13 +27,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: loadView('Home'),
-    beforeEnter: guard
-  },
-  {
-    path: '/users',
-    name: 'Users',
-    component: loadView('Users'),
+    component: loadView('Calendar'),
     beforeEnter: guard
   },
   {
@@ -58,6 +52,30 @@ const routes = [
     path: '/calendar',
     name: 'Calendar',
     component: loadView('Calendar'),
+    beforeEnter: guard
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: loadView('Users'),
+    beforeEnter: guard
+  },
+  {
+    path: '/locations',
+    name: 'Locations',
+    component: loadView('Locations'),
+    beforeEnter: guard
+  },
+  {
+    path: '/patients',
+    name: 'Patients',
+    component: loadView('Patients'),
+    beforeEnter: guard
+  },
+  {
+    path: '/my-account',
+    name: 'Account',
+    component: loadView('Account'),
     beforeEnter: guard
   },
   {
