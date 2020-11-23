@@ -2,7 +2,7 @@
   <DataTable
     :value="dataFormatted"
     :paginator="true"
-    :rows="5"
+    :rows="10"
     :loading="loading"
     :filters="filters"
     removableSort
@@ -125,7 +125,7 @@
         <Button
           label="Update"
           icon="pi pi-pencil"
-          class="p-button-rounded p-button-text p-mr-2"
+          class="p-button-rounded p-button-text p-button-sm"
           @click="
             $router.push({
               name: 'UpdateBooking',
@@ -136,12 +136,12 @@
         <Button
           label="Report"
           icon="pi pi-download"
-          class="p-button-rounded p-button-secondary p-button-text"
+          class="p-button-rounded p-button-secondary p-button-text p-button-sm"
         />
         <Button
           label="Delete"
           icon="pi pi-times"
-          class="p-button-rounded p-button-danger p-button-text"
+          class="p-button-rounded p-button-danger p-button-text p-button-sm"
           @click="$emit('delete', slotProps.data.id)"
         />
       </template>

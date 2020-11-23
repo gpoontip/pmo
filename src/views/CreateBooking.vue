@@ -1,5 +1,10 @@
 <template>
-  <BookingForm @submitted="createBooking" :locations="locations" />
+  <h1>Create Booking</h1>
+  <div class="p-grid">
+    <div class="p-col-12 p-md-6">
+      <BookingForm @submitted="createBooking" :locations="locations" />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -22,3 +27,8 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.form {
+}
+</style>

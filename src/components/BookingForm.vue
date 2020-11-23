@@ -72,7 +72,7 @@
         class="testing-postal-code"
         v-model="formData.location.postalCode"
       />
-      <h2>Testees</h2>
+      <h2>Patients</h2>
       <ol>
         <li
           v-for="testee in numberOfTestees"
