@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import store from '../store';
 
-let entryUrl = store.state.entryUrl;
+let entryUrl = null;
 const guard = async (to, from, next) => {
   if (store.state.idToken) {
     if (entryUrl) {
